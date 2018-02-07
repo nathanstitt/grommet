@@ -3,11 +3,11 @@ import fs from 'fs-extra';
 import git from 'simple-git/promise';
 import path from 'path';
 
-const repoURL = `https://${process.env.GH_TOKEN}@github.com/grommet/grommet.git`;
+const repoURL = `https://git@github.com:nathanstitt/grommet.git`;
 const localFolder = path.resolve('./.tmp/grommet');
 const localDist = path.resolve('./dist');
 
-if (process.env.CI) {
+
   del(localFolder).then(() => {
     git().silent(true)
       .clone(repoURL, localFolder)
@@ -19,6 +19,3 @@ if (process.env.CI) {
       .then(() => git(localFolder).push('origin', 'NEXT-stable'))
       .catch(err => console.error('failed: ', err));
   });
-} else {
-  console.warn('Skipping release. Release:stable task should be executed by CI only.');
-}
